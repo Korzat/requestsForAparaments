@@ -1,3 +1,4 @@
+
 #Number 1
 # from bs4 import BeautifulSoup
 # import requests
@@ -92,37 +93,36 @@ class Parser:
         }
         self.r = requests.get(URL, headers=headers)
         self.soup = BeautifulSoup(self.r.content, 'html.parser')
-
+        self.list_of_apartments = []
+        self.list_of_name = []
     def collection(self):
 
         try:
             if self.r.status_code == 200:
-                self.list_of_apartments = []
-                self.list_of_name = []
-                full_link = self.soup.find_all('div', {'class': '_93444fe79c--row--kEHOK_93444fe79c--row--kEHOK'})
-                for linkall in full_link:
-                    link = linkall.find('a', {'class': '_93444fe79c--link--eoxce'})
-                    if linkall:
-                        self.list_of_apartments.append(link.get('href'))
-                    else:
-                        continue
-                    name = linkall.find('span', {'class': '_93444fe79c--color_text-main-default--HgSpe _93444fe79c--lineHeight_28px--KFXmc _93444fe79c--fontWeight_bold--BbhnX _93444fe79c--fontSize_22px--sFuaL _93444fe79c--display_block--KYb25 _93444fe79c--text--b2YS3 _93444fe79c--text_letterSpacing__normal--yhcXb'})
-                    if linkall:
-                        self.list_of_name.append(name.get_text())
-                    else:
-                        continue
+                # full_link = self.soup.find_all('div', {'class': '_93444fe79c--row--kEHOK_93444fe79c--row--kEHOK'})
+                # print('testssss',full_link)
+                # for linkall in full_link:
+                apartaments = self.soup.findAll('a', {'class': '_93444fe79c--link--eoxce'})
+                    # if linkall:
+                    #     self.list_of_apartments.append(link.get('href'))
+                    # else:
+                    #     continue
+                names = self.soup.findAll('span', {'class': '_93444fe79c--color_text-main-default--HgSpe _93444fe79c--lineHeight_28px--KFXmc _93444fe79c--fontWeight_bold--BbhnX _93444fe79c--fontSize_22px--sFuaL _93444fe79c--display_block--KYb25 _93444fe79c--text--b2YS3 _93444fe79c--text_letterSpacing__normal--yhcXb'})
+                    # if linkall:
+                    #     self.list_of_name.append(name.get_text())
+                    # else:
+                    #     continue
                 # counter = 0
                 #
-                # for link in apartment_links:
-                #     href = link.get('href')
-                #     self.list_of_apartments.append(href)
+                for link in apartaments:
+                    href = link.get('href')
+                    self.list_of_apartments.append(href)
                 # self.list_of_apartments = set(self.list_of_apartments)
-                # for name in apartment_name:
-                #     name1 = name.text
-                #     self.list_of_name.append(name1)
+                for name in names:
+                    name1 = name.text
+                    self.list_of_name.append(name1)
                 # self.list_of_name = set(self.list_of_name)
-                return [self.list_of_name, self.list_of_apartments]
-
+                # return [self.list_of_name, self.list_of_apartments]
             else:
 
                 return f"Error: Unable to fetch data, status code: {self.r.status_code}"
